@@ -1,0 +1,3 @@
+C:/Users/afra-laptop/dev/cpp/mario_maze/cmake-build-debug/CMakeFiles/mario_maze.dir
+C:/Users/afra-laptop/dev/cpp/mario_maze/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/afra-laptop/dev/cpp/mario_maze/cmake-build-debug/CMakeFiles/rebuild_cache.dir
