@@ -5,8 +5,11 @@
 #ifndef BACKTRACKING_H
 #define BACKTRACKING_H
 
-#define MAX_ROWS 100
-#define MAX_COLS 100
+#define MAX_ROWS 20
+#define MAX_COLS 20
+#define MAX_SOLUTIONS 4
+#define MAX_STEPS 324
+#define MAX_COINS 10
 
 #define MASK_WALL   0x01 // 1
 #define MASK_END    0x02 // 2
@@ -30,11 +33,14 @@ typedef struct
 {
     int rows;
     int cols;
+    int solutionSize = 0;
     int mat[MAX_ROWS][MAX_COLS];
-    int auxMat[MAX_ROWS][MAX_COLS];
-    Node* nodes[MAX_ROWS][MAX_COLS];
-    int steps = 0;
-    int coins = 0;
+    int originalMat[MAX_ROWS][MAX_COLS];
+    int solutions[MAX_SOLUTIONS][MAX_ROWS][MAX_COLS];
+    int steps[MAX_STEPS] = {0};
+    int coins[MAX_COINS] = {0};
+    int coinsCurr = 0;
+    int stepsCurr = 0;
 } Grid;
 
 void bktkLevel1(Grid* grid, int x, int y);

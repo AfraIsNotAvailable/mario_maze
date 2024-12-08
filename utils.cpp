@@ -5,9 +5,8 @@
 #include "utils.h"
 
 #include <cstdio>
+#include <stdlib.h>
 #include <unistd.h>
-
-// #include "backtracking.h"
 
 #define MASK_WALL   0x01 // 1
 #define MASK_END    0x02 // 2
@@ -24,7 +23,35 @@
 const unsigned char CONS_COLORS_FG[] = {30, 34, 32, 36, 31, 35, 33, 37, 90, 94, 92, 94, 91, 95, 93, 97};
 const unsigned char CONS_COLORS_BG[] = {49, 44, 42, 46, 41, 45, 43, 47, 100, 104, 102, 106, 101, 105, 103, 107};
 
-int set_text_color(unsigned char foreground, unsigned char background = 0)
+void addSolution(Grid* grid)
+{
+    grid->coins[grid->solutionSize] = grid->coinsCurr;
+    grid->steps[grid->solutionSize] = grid->stepsCurr;
+
+    for (int i = 0; i < grid->rows; ++i)
+    {
+        for (int j = 0; j < grid->cols; ++j)
+        {
+            grid->solutions[grid->solutionSize][i][j] = grid->mat[i][j];
+        }
+    }
+    grid->solutionSize++;
+}
+
+void simplePrintMatrix(int mat[MAX_ROWS][MAX_COLS], int rows, int cols)
+{
+    int i, j;
+    for (i = 0; i < rows; ++i)
+    {
+        for (j = 0; j < cols; ++j)
+        {
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int set_text_color(unsigned char foreground, unsigned char background)
 {
     if (background >= 16 || foreground >= 16)
     {
@@ -77,24 +104,25 @@ int readGrid(Grid* grid, const char* filename)
 enum GridColor
 {
     COLOR_WALL = 14, // Light gray background
-    COLOR_EMPTY = 0, // Black
-    COLOR_FILL = 6, // Cyan
-    COLOR_COIN = 6, // Cyan (foreground)
+    COLOR_EMPTY_FG = 15, // White
+    COLOR_EMPTY_BG = 0, // Black
+    COLOR_FILL = 12, // lred
+    COLOR_COIN = 6, // yellow (foreground)
     COLOR_MARIO = 15, // Red
     COLOR_MARIO_BG = 4, // White background
     COLOR_END = 15, // Green
-    COLOR_END_BG = 10, // White background
+    COLOR_END_BG = 2, // White background
 };
 
 void displayGridElement(int cellValue)
 {
-    int foreground = COLOR_EMPTY;
-    int background = COLOR_EMPTY;
+    int foreground = COLOR_EMPTY_FG;
+    int background = COLOR_EMPTY_BG;
     const char* display = "  ";
 
     if (cellValue & MASK_WALL)
     {
-        foreground = COLOR_EMPTY;
+        foreground = COLOR_EMPTY_BG;
         background = COLOR_WALL;
         display = "  ";
     }
@@ -130,7 +158,42 @@ void displayGridElement(int cellValue)
     reset_text_color();
 }
 
-void displayGrid(const Grid* grid, int lastCommand)
+void displaySolution(const Grid* grid, int solutionIndex)
+{
+    int i, j;
+    for (i = 0; i < grid->rows; ++i)
+    {
+        if (i == 0)
+        {
+            //draw the upper line
+            printf("  |");
+            for (j = 0; j < grid->cols; ++j)
+            {
+                printf("%2d|", j);
+            }
+            printf("\n--+");
+            for (j = 0; j < grid->cols; ++j)
+            {
+                printf("--+");
+            }
+            printf("\n");
+        }
+        printf("%2d|", i);
+        for (j = 0; j < grid->cols; ++j)
+        {
+            displayGridElement(grid->solutions[solutionIndex][i][j]);
+            printf("|");
+        }
+        printf("\n--+");
+        for (j = 0; j < grid->cols; ++j)
+        {
+            printf("--+");
+        }
+        printf("\n");
+    }
+}
+
+void displayGrid(const Grid* grid)
 {
     int i, j;
     // system("cls");
@@ -251,4 +314,9 @@ void displayGrid(const Grid* grid, int lastCommand)
         // }
         // printf("\n");
     }
+}
+
+void delay(int milliseconds)
+{
+    usleep(milliseconds * 1000);
 }

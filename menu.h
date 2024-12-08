@@ -4,8 +4,12 @@
 
 #ifndef MENU_H
 #define MENU_H
+#include "backtracking.h"
 
 void startMenu();
-void printTitle(const char* filename);
+void displayTitle();
+void displayMario();
+void displayLevel1();
+void displaySolutions(const Grid *grid);
 
 #endif //MENU_H

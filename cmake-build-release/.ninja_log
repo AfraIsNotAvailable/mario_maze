@@ -62,3 +62,8 @@
 117	224	7552881406896086	mario_maze.exe	b8ebe8a024eea563
 6	133	7552904897887498	CMakeFiles/mario_maze.dir/backtracking.cpp.obj	2c2ee18c50eff35f
 133	249	7552904899157210	mario_maze.exe	b8ebe8a024eea563
+20	342	7553628366581000	CMakeFiles/mario_maze.dir/utils.cpp.obj	f3463e6fe4b5a811
+10	904	7553628366471025	CMakeFiles/mario_maze.dir/main.cpp.obj	d40f27c1c51989e9
+27	964	7553628366651079	CMakeFiles/mario_maze.dir/menu.cpp.obj	754c61553299a88b
+15	1019	7553628366531038	CMakeFiles/mario_maze.dir/backtracking.cpp.obj	2c2ee18c50eff35f
+1019	1206	7553628376566959	mario_maze.exe	b8ebe8a024eea563
