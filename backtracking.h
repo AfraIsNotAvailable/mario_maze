@@ -33,6 +33,7 @@ typedef struct
     int coinsCurr = 0;
     int stepsCurr = 0;
     bool marioDied = false;
+    bool powerup = false;
     Goomba goombas[3] = {
     {0, 2, 2, 3, 3},
     {0, 4, 7, 5, 7},
@@ -42,5 +43,6 @@ typedef struct
 
 void bktkLevel1(Grid* grid, int x, int y);
 bool bktkLevel2(Grid* grid, int x, int y);
+bool bktkLevel3(Grid* grid, int x, int y, int currentStep = 0, int step = 4);
 
 #endif //BACKTRACKING_H

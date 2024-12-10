@@ -35,7 +35,8 @@ void stepGoomba(Grid* grid, int i)
         {
             next_x--;
         }
-    } else if (i == 1)
+    }
+    else if (i == 1)
     {
         if (grid->goombas[i].x == 4 && grid->goombas[i].y < 8)
         {
@@ -53,7 +54,8 @@ void stepGoomba(Grid* grid, int i)
         {
             next_x--;
         }
-    } else if (i == 2)
+    }
+    else if (i == 2)
     {
         if (grid->goombas[i].x == 5 && grid->goombas[i].y < 5)
         {
@@ -87,9 +89,14 @@ void resetCell(Grid* grid, int x, int y)
 
 bool isValid(int x, int y, Grid* grid)
 {
+    if (grid->mat[x][y] == 256)
+    {
+        grid->powerup = true;
+    }
     if (x >= 1 && x <= grid->rows - 1 && y >= 1 && y <= grid->cols - 1
         && grid->mat[x][y] != 1 && grid->mat[x][y] != 32
-        && grid->mat[x][y] != 64)
+        && grid->mat[x][y] != 64 && grid->mat[x][y] != 16 // TODO: test this
+        && grid->mat[x][y] != 128)
     {
         return true;
     }
@@ -105,19 +112,17 @@ void bktkLevel1(Grid* grid, int x, int y)
     system("cls");
     displayLevel1();
     displayGrid(grid);
-    // delay(250); // usleep(1000000); // TODO: put it back
+    delay(250); // usleep(1000000);
     if (x == grid->rows - 2 && y == grid->cols - 2)
     {
         system("cls");
         displayLevel1();
         displayGrid(grid);
         printf("End reached!\n");
-        // printf("Pasi: %d\n", grid->stepsCurr);
-        // printf("Coins: %d\n", grid->coinsCurr);
         addSolution(grid);
         grid->coinsCurr = 0;
         resetCell(grid, x, y);
-        // delay(1000); //TODO: put it back
+        delay(1000);
         return;
     }
     grid->mat[x][y] = 32;
@@ -144,18 +149,17 @@ void bktkLevel1(Grid* grid, int x, int y)
 bool bktkLevel2(Grid* grid, int x, int y)
 {
     system("cls");
-    // TODO: check mario died
     stepGoomba(grid, 0);
     stepGoomba(grid, 1);
     stepGoomba(grid, 2);
     grid->mat[x][y] = 4; // 4 is the mario
+    displayLevel2();
     displayGrid(grid);
-    // displayLevel2(); // TODO: displayLevel2
-    delay(750);
+    delay(250);
     if (x == grid->rows - 2 && y == grid->cols - 2)
     {
         system("cls");
-        // displayLevel2(); // TODO: displayLevel2
+        displayLevel2();
         displayGrid(grid);
         printf("End reached!\n");
         resetCell(grid, x, y);
@@ -187,6 +191,75 @@ bool bktkLevel2(Grid* grid, int x, int y)
                 return true;
             }
             grid->stepsCurr--;
+        }
+    }
+    resetCell(grid, x, y);
+    return false;
+}
+
+bool bktkLevel3(Grid* grid, int x, int y, int currentStep, int step)
+{
+    grid->mat[x][y] = 4; // 4 is the mario
+    currentStep++;
+    if (currentStep == step)
+    {
+        system("cls");
+        displayLevel3();
+        displayGrid(grid);
+        currentStep = 0;
+        delay(250); // usleep(1000000);
+    }
+    if (x == grid->rows - 2 && y == grid->cols - 2 && grid->powerup)
+    {
+        system("cls");
+        displayLevel3();
+        displayGrid(grid);
+        printf("End reached!\n");
+        resetCell(grid, x, y);
+        delay(1000);
+        return true;
+    }
+    if (x == grid->rows - 2 && y == grid->cols - 2 && !grid->powerup)
+    {
+        system("cls");
+        displayGrid(grid);
+        delay(1000);
+        system("cls");
+        displayGameOver("Bowser is guarding the exit!\nYou might want to find a powerup first!");
+        resetCell(grid, x, y);
+        delay(3000);
+        return false;
+    }
+    grid->mat[x][y] = 32;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        int nextRow = x + dx[i];
+        int nextCol = y + dy[i];
+
+        if (grid->mat[nextRow][nextCol] == 128)
+        {
+            delay(1000);
+            system("cls");
+            displayGameOver("You got eaten by a Piranha Plant!");
+            delay(2000);
+        }
+        else if (grid->mat[nextRow][nextCol] == 256)
+        {
+            system("cls");
+            displayLevel3();
+            displayGrid(grid);
+            delay(1000);
+            system("cls");
+            displayPowerUp();
+            delay(2000);
+        }
+        if (isValid(nextRow, nextCol, grid))
+        {
+            if (bktkLevel3(grid, nextRow, nextCol, currentStep, step))
+            {
+                return true;
+            }
         }
     }
     resetCell(grid, x, y);

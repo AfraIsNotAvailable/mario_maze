@@ -26,7 +26,7 @@ enum Direction
 };
 
 Direction getNextDirection(int i);
-void initGrid(Grid* grid, char* filename);
+void initGrid(Grid* grid, const char* filename);
 void waitForEnter(int times = 2);
 int set_text_color(unsigned char foreground, unsigned char background = 0);
 int readGrid(Grid* grid, const char* filename);

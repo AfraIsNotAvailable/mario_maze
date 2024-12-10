@@ -9,20 +9,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define MASK_WALL   0x01 // 1
-#define MASK_END    0x02 // 2
-#define MASK_MARIO  0x04 // 4
-#define MASK_COIN   0x08 // 8
-#define MASK_GOOMBA 0x10 // 16
-#define MASK_FILL   0x20 // 32
-#define MASK_PILLAR 0x40 // 64
-#define MASK_PARENT 0xF00// 384
-#define MASK_UP     0x100// 256
-#define MASK_DOWN   0x200// 512
-#define MASK_LEFT   0x400// 1024
-#define MASK_RIGHT  0x800// 2048
+#define MASK_WALL    0x01 // 1
+#define MASK_END     0x02 // 2
+#define MASK_MARIO   0x04 // 4
+#define MASK_COIN    0x08 // 8
+#define MASK_GOOMBA  0x10 // 16
+#define MASK_FILL    0x20 // 32
+#define MASK_PILLAR  0x40 // 64
+#define MASK_PIRANHA 0x80 // 128
+#define MASK_POWER   0x100// 256
+#define MASK_PARENT  0xF00// 384
+#define MASK_UP      0x100// 256
+#define MASK_DOWN    0x200// 512
+#define MASK_LEFT    0x400// 1024
+#define MASK_RIGHT   0x800// 2048
 
-void initGrid(Grid* grid, char* filename)
+void initGrid(Grid* grid, const char* filename)
 {
     readGrid(grid, filename);
     memcpy(grid->originalMat, grid->mat, sizeof(grid->mat));
@@ -143,7 +145,10 @@ enum GridColor
     COLOR_MARIO_BG = 4, // White background
     COLOR_END = 15, // Green
     COLOR_END_BG = 2, // White background
-    COLOR_GOOMBA = 3 // cyan
+    COLOR_GOOMBA = 3, // cyan
+    COLOR_PILLAR = 8, // gray
+    COLOR_PIRANHA = 4, // red
+    COLOR_POWER = 6 // yellow
 };
 
 void displayGridElement(int cellValue)
@@ -186,7 +191,7 @@ void displayGridElement(int cellValue)
     }
     else if (cellValue & MASK_PILLAR)
     {
-        foreground = COLOR_WALL;
+        foreground = COLOR_PILLAR;
         background = COLOR_EMPTY_BG;
         display = "/\\";
     }
@@ -195,6 +200,16 @@ void displayGridElement(int cellValue)
         foreground = COLOR_GOOMBA;
         background = COLOR_EMPTY_BG;
         display = "GG";
+    } else if (cellValue & MASK_PIRANHA)
+    {
+        foreground = COLOR_PIRANHA;
+        background = COLOR_EMPTY_BG;
+        display = "^^";
+    } else if (cellValue & MASK_POWER)
+    {
+        foreground = COLOR_POWER;
+        background = COLOR_EMPTY_BG;
+        display = "??";
     }
 
     set_text_color(foreground, background);
