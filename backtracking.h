@@ -7,7 +7,7 @@
 
 #define MAX_ROWS 20
 #define MAX_COLS 20
-#define MAX_SOLUTIONS 4
+#define MAX_SOLUTIONS 16
 #define MAX_STEPS 324
 #define MAX_COINS 10
 
@@ -22,12 +22,14 @@
 #define MASK_LEFT   0x400// 1024
 #define MASK_RIGHT  0x800// 2048
 
-typedef struct _node
+typedef struct
 {
-    int color;
-    int dist;
-    struct _node* parent;
-} Node;
+    int previousCell = 0; // for remembering what to place back
+    int x;
+    int y;
+    const int pillar_x;
+    const int pillar_y;
+} Goomba;
 
 typedef struct
 {
@@ -41,8 +43,15 @@ typedef struct
     int coins[MAX_COINS] = {0};
     int coinsCurr = 0;
     int stepsCurr = 0;
+    bool marioDied = false;
+    Goomba goombas[3] = {
+    {2, 2, 3, 3},
+    {4, 7, 5, 7},
+    {7, 5, 6, 4}
+    };
 } Grid;
 
 void bktkLevel1(Grid* grid, int x, int y);
+void bktkLevel2(Grid* grid, int x, int y);
 
 #endif //BACKTRACKING_H

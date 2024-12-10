@@ -11,5 +11,7 @@ void displayTitle();
 void displayMario();
 void displayLevel1();
 void displaySolutions(const Grid *grid);
+void finalLevel1(Grid* grid);
+void finalTitleSeq();
 
 #endif //MENU_H

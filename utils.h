@@ -17,6 +17,17 @@ enum
     COMMAND_PERF
 };
 
+enum Direction
+{
+    UP = 0,
+    RIGHT = 1,
+    DOWN = 2,
+    LEFT = 3
+};
+
+Direction getNextDirection(int i);
+void initGrid(Grid* grid, char* filename);
+void waitForEnter(int times = 2);
 int set_text_color(unsigned char foreground, unsigned char background = 0);
 int readGrid(Grid* grid, const char* filename);
 void displayGrid(const Grid* grid);

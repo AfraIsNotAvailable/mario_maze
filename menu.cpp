@@ -9,6 +9,50 @@
 
 #include "utils.h"
 
+void finalLevel1(Grid *grid)
+{
+    int choice = -1;
+    system("cls");
+    bktkLevel1(grid, 1, 1);
+    do
+    {
+        system("cls");
+        displayLevel1();
+        printf("Alege optiunea care crezi ca il ajuta pe Mario:\n");
+        displaySolutions(grid);
+        printf("> ");
+        scanf("%d", &choice);
+        if (choice == 1 || choice == 3)
+        {
+            system("cls");
+            printf("Acest drum nu este cel optim!\nMario nu poate merge pe aici!!\n");
+            // delay(3000);
+            waitForEnter();
+        }
+        else if (choice != 2)
+        {
+            system("cls");
+            printf("OH NO!\nAceasta optiune nu exista!\n");
+            // delay(3000);
+            waitForEnter();
+        }
+    }
+    while (choice != 2);
+    system("cls");
+    printf("BINE COAIEEE!!!!!!!\n");
+    // delay(3000);
+    waitForEnter();
+}
+
+void finalTitleSeq()
+{
+    delay(500);
+    displayTitle();
+    printf("\n\nApasa orice tasta pentru a continua...");
+    waitForEnter(1);
+}
+
+
 void displayMario()
 {
     printf("\n");
