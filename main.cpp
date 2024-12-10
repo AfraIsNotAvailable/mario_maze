@@ -24,7 +24,11 @@ int main()
     // finalLevel1(&gridLv1); // LEVEL 1
 
     displayGrid(&gridLv2);
-    bktkLevel2(&gridLv2, 1, 1);
+    if (bktkLevel2(&gridLv2, 1, 1))
+    {
+        system("cls");
+        printf("Level 2 completed!\n");
+    }
     waitForEnter(1);
 
     return 0;

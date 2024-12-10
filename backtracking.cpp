@@ -14,33 +14,68 @@
 
 void stepGoomba(Grid* grid, int i)
 {
-    if (i >= 3)
-    {
-        throw std::invalid_argument("Invalid goomba index");
-    }
-    int next_x = grid->goombas[0].x;
-    int next_y = grid->goombas[0].y;
+    int next_x = grid->goombas[i].x;
+    int next_y = grid->goombas[i].y;
 
-    if (grid->goombas[i].x == 2 && grid->goombas[i].y < 4)
+    if (i == 0)
     {
-        next_y++;
-    }
-    else if (grid->goombas[i].x < 4 && grid->goombas[i].y == 4)
+        if (grid->goombas[i].x == 2 && grid->goombas[i].y < 4)
+        {
+            next_y++;
+        }
+        else if (grid->goombas[i].x < 4 && grid->goombas[i].y == 4)
+        {
+            next_x++;
+        }
+        else if (grid->goombas[i].x == 4 && grid->goombas[i].y > 2)
+        {
+            next_y--;
+        }
+        else if (grid->goombas[i].x > 2 && grid->goombas[i].y == 2)
+        {
+            next_x--;
+        }
+    } else if (i == 1)
     {
-        next_x++;
-    }
-    else if (grid->goombas[i].x == 4 && grid->goombas[i].y > 2)
+        if (grid->goombas[i].x == 4 && grid->goombas[i].y < 8)
+        {
+            next_y++;
+        }
+        else if (grid->goombas[i].x < 6 && grid->goombas[i].y == 8)
+        {
+            next_x++;
+        }
+        else if (grid->goombas[i].x == 6 && grid->goombas[i].y > 6)
+        {
+            next_y--;
+        }
+        else if (grid->goombas[i].x > 4 && grid->goombas[i].y == 6)
+        {
+            next_x--;
+        }
+    } else if (i == 2)
     {
-        next_y--;
+        if (grid->goombas[i].x == 5 && grid->goombas[i].y < 5)
+        {
+            next_y++;
+        }
+        else if (grid->goombas[i].x < 7 && grid->goombas[i].y == 5)
+        {
+            next_x++;
+        }
+        else if (grid->goombas[i].x == 7 && grid->goombas[i].y > 3)
+        {
+            next_y--;
+        }
+        else if (grid->goombas[i].x > 5 && grid->goombas[i].y == 3)
+        {
+            next_x--;
+        }
     }
-    else if (grid->goombas[i].x > 2 && grid->goombas[i].y == 2)
-    {
-        next_x--;
-    }
-    // int nextPreviousCell = grid->mat[next_x][next_y];
+    int nextPreviousCell = grid->mat[next_x][next_y];
     grid->mat[next_x][next_y] = 16;
     grid->mat[grid->goombas[i].x][grid->goombas[i].y] = grid->goombas[i].previousCell;
-    // grid->goombas[i].previousCell = nextPreviousCell;
+    grid->goombas[i].previousCell = nextPreviousCell;
     grid->goombas[i].x = next_x;
     grid->goombas[i].y = next_y;
 }
@@ -52,8 +87,9 @@ void resetCell(Grid* grid, int x, int y)
 
 bool isValid(int x, int y, Grid* grid)
 {
-    if (x >= 1 && x <= grid->rows - 1 && y >= 1 && y <= grid->cols - 1 && grid->mat[x][y] != 1 && grid->mat[x][y] != 32
-        && grid->mat[x][y] != 24)
+    if (x >= 1 && x <= grid->rows - 1 && y >= 1 && y <= grid->cols - 1
+        && grid->mat[x][y] != 1 && grid->mat[x][y] != 32
+        && grid->mat[x][y] != 64)
     {
         return true;
     }
@@ -105,42 +141,36 @@ void bktkLevel1(Grid* grid, int x, int y)
     resetCell(grid, x, y);
 }
 
-void bktkLevel2(Grid* grid, int x, int y)
+bool bktkLevel2(Grid* grid, int x, int y)
 {
+    system("cls");
+    // TODO: check mario died
+    stepGoomba(grid, 0);
+    stepGoomba(grid, 1);
+    stepGoomba(grid, 2);
     grid->mat[x][y] = 4; // 4 is the mario
     displayGrid(grid);
-    // TODO: check mario died
-    stepGoomba(grid, 0); // TODO: THE PROBLEM IS HERE BUT WHEEEEREEEE
-    displayGrid(grid);
-    // stepGoomba(grid, 1);
-    // stepGoomba(grid, 2);
-    // system("cls");
-    // displayLevel1();
-    // displayGrid(grid);
-    delay(2000); // TODO: put it back
+    // displayLevel2(); // TODO: displayLevel2
+    delay(750);
     if (x == grid->rows - 2 && y == grid->cols - 2)
     {
         system("cls");
-        // displayLevel1();
+        // displayLevel2(); // TODO: displayLevel2
         displayGrid(grid);
         printf("End reached!\n");
-        // printf("Pasi: %d\n", grid->stepsCurr);
-        // printf("Coins: %d\n", grid->coinsCurr);
-        // addSolution(grid);
-        // grid->coinsCurr = 0;
         resetCell(grid, x, y);
-        delay(1000); //TODO: put it back
-        return;
+        delay(1000);
+        return true;
     }
     if (grid->marioDied)
     {
-        // system("cls");
+        system("cls");
         displayGrid(grid);
         printf("Oh no! Mario died!\n");
         resetCell(grid, x, y);
         grid->marioDied = false;
         delay(1000);
-        return;
+        return false;
     }
     grid->mat[x][y] = 32;
 
@@ -151,16 +181,14 @@ void bktkLevel2(Grid* grid, int x, int y)
 
         if (isValid(nextRow, nextCol, grid))
         {
-            // if (grid->mat[nextRow][nextCol] == 8)
-            // {
-            //     grid->coinsCurr++;
-            // }
             grid->stepsCurr++;
-            // stepGoomba(grid, 0);
-            bktkLevel2(grid, nextRow, nextCol);
-            displayGrid(grid);
+            if (bktkLevel2(grid, nextRow, nextCol))
+            {
+                return true;
+            }
             grid->stepsCurr--;
         }
     }
     resetCell(grid, x, y);
+    return false;
 }
