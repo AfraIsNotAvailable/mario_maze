@@ -95,7 +95,7 @@ bool isValid(int x, int y, Grid* grid)
     }
     if (x >= 1 && x <= grid->rows - 1 && y >= 1 && y <= grid->cols - 1
         && grid->mat[x][y] != 1 && grid->mat[x][y] != 32
-        && grid->mat[x][y] != 64 && grid->mat[x][y] != 16 // TODO: test this
+        && grid->mat[x][y] != 64 && grid->mat[x][y] != 16
         && grid->mat[x][y] != 128)
     {
         return true;
