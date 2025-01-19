@@ -25,14 +25,14 @@ Note: croi if you're reading this kindly piss off :)
 
 The first level is a simple maze with a single solution. The player **(SM)** can move in 4 directions: up, down, left, right.
 The player can pick up coins too.
-At the end there are 3 solutions. The correct one is the one with enough coins to pass but not with too many steps.
+At the end there are 3 solutions. The correct one is the one with enough coins to pass but with not too many steps.
 
 ## Level 2
 
 ![level 2](/images/level2.png)
 
-The second level is a bit more complex. The player has to avoid the goombas **(GG)** that are moving around the pillars (/\)
-in a circular pattern. The point is to find a solution that avoinds them.
+The second level is a bit more complex. The player has to avoid the goombas **(GG)** that are moving around the pillars 
+**(/\\)** in a circular pattern. The point is to find a solution that avoids them.
 
 ## Level 3
 
